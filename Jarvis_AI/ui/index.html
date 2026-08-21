@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STARK INDUSTRIES | MK-85 HUD</title>
+    <style>
+        /* Embedded Fonts Fallback */
+        @font-face {
+            font-family: 'Share Tech Mono';
+            src: local('Consolas');
+        }
+
+        @font-face {
+            font-family: 'Antonio';
+            src: local('Impact');
+        }
+
+        :root {
+            --cyan: #00f3ff;
+            --cyan-dim: rgba(0, 243, 255, 0.2);
+            --cyan-glow: rgba(0, 243, 255, 0.6);
+            --danger: #ff3333;
+            --bg: #020406;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 50% 50%, #0d1e2d 0%, #000 85%),
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            height: 100vh;
+            width: 100vw;
+            color: var(--cyan);
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        .top-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 200;
+        }
+
+        .btn-ctrl {
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            background: rgba(0, 243, 255, 0.05);
+            padding: 8px 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-ctrl:hover {
+            background: var(--cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--cyan);
+        }
+
+        .btn-danger {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: rgba(255, 51, 51, 0.05);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: #fff;
+            box-shadow: 0 0 20px var(--danger);
+        }
+
+        .interface {
+            width: 95vw;
+            height: 90vh;
+            display: grid;
+            grid-template-columns: 280px 1fr 280px;
+            grid-template-rows: 60px 1fr 100px;
+            position: relative;
+        }
+
+        .border-line {
+            position: absolute;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            opacity: 0.6;
+        }
+
+        .top-bar {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+        }
+
+        .bottom-bar {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+        }
+
+        .panel-left {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-right: 1px solid var(--cyan-dim);
+        }
+
+        .stark-logo {
+            font-family: 'Antonio', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            color: var(--cyan);
+            text-transform: uppercase;
+        }
+
+        .logo-sub {
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            color: var(--cyan);
+            opacity: 0.7;
+            margin-bottom: 30px;
+        }
+
+        .suit-figure {
+            flex-grow: 1;
+            border: 1px solid var(--cyan-dim);
+            background: rgba(0, 243, 255, 0.02);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--cyan-dim);
+            overflow: hidden;
+        }
+
+        #char-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        .panel-right {
+            padding: 20px;
+            border-left: 1px solid var(--cyan-dim);
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .data-box {
+            border: 1px solid var(--cyan-dim);
+            padding: 10px;
+            background: rgba(0, 243, 255, 0.02);
+        }
+
+        .data-title {
+            font-size: 0.7rem;
+            color: #fff;
+            opacity: 0.5;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .big-text {
+            font-size: 2rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .center-stage {
+            grid-column: 2;
+            grid-row: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            flex-direction: column;
+        }
+
+        /* ARC REACTOR */
+        .arc-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .c-core {
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, #ffffff 10%, var(--cyan) 60%, transparent 90%);
+            box-shadow: 0 0 60px var(--cyan-glow), inset 0 0 20px #fff;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Antonio', sans-serif;
+            font-size: 1.5rem;
+            color: #000;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px white;
+        }
+
+        .c-inner {
+            width: 180px;
+            height: 180px;
+            border: 2px dashed var(--cyan);
+            opacity: 0.8;
+            animation: rotate-cw 20s linear infinite;
+        }
+
+        .c-mid {
+            width: 260px;
+            height: 260px;
+            background: repeating-conic-gradient(var(--cyan) 0 5deg, transparent 5deg 15deg);
+            -webkit-mask: radial-gradient(transparent 60%, black 61%);
+            mask: radial-gradient(transparent 60%, black 61%);
+            opacity: 0.7;
+            animation: rotate-ccw 10s linear infinite;
+        }
+
+        .c-outer {
+            width: 350px;
+            height: 350px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-top: 4px solid var(--cyan);
+            border-bottom: 4px solid var(--cyan);
+            animation: rotate-scan 8s ease-in-out infinite;
+        }
+
+        @keyframes rotate-cw {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotate-ccw {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes rotate-scan {
+            0% {
+                transform: rotate(0deg);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: rotate(180deg);
+                opacity: 1;
+                border-color: #fff;
+            }
+
+            100% {
+                transform: rotate(360deg);
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes pulse-deep {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 40px var(--cyan);
+            }
+
+            100% {
+                transform: scale(1.05);
+                box-shadow: 0 0 90px var(--cyan);
+            }
+        }
+
+        @keyframes vibrate {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            20% {
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                transform: translate(-2px, -2px);
+            }
+
+            60% {
+                transform: translate(2px, 2px);
+            }
+
+            80% {
+                transform: translate(2px, -2px);
+            }
+        }
+
+        /* STATES */
+        .listening .c-core {
+            animation: pulse-deep 1.5s infinite alternate;
+            background: radial-gradient(circle, #fff 30%, var(--cyan) 70%, transparent 100%);
+        }
+
+        .speaking .c-core {
+            background: radial-gradient(circle, #fff 0%, #ff0055 60%, transparent 100%);
+            box-shadow: 0 0 80px #ff0055;
+            animation: vibrate 0.1s infinite;
+        }
+
+        .speaking .c-outer {
+            border-color: #ff0055;
+            animation-duration: 1s;
+        }
+
+        #status-text {
+            margin-top: 20px;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--cyan);
+            letter-spacing: 2px;
+        }
+
+        #conversation {
+            margin-top: 15px;
+            font-style: italic;
+            color: #eee;
+            min-height: 40px;
+            text-align: center;
+            width: 80%;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-controls">
+        <button class="btn-ctrl btn-danger" onclick="py.shutdown()">[ X ] ABORT</button>
+    </div>
+
+    <div class="interface">
+        <div class="border-line top-bar"></div>
+        <div class="border-line bottom-bar"></div>
+
+        <div class="panel-left">
+            <div class="stark-logo">JARVIS<br>OS V.1.0</div>
+            <div class="logo-sub">ONLINE</div>
+            <div class="suit-figure">
+                <img id="char-img" src="" alt="NO SIGNAL" onerror="this.style.display='none';">
+            </div>
+        </div>
+
+        <div class="center-stage">
+            <div class="arc-container" id="orb-container">
+                <div class="circle c-outer"></div>
+                <div class="circle c-mid"></div>
+                <div class="circle c-inner"></div>
+                <div class="circle c-core">JARVIS</div>
+            </div>
+
+            <div id="status-text">INITIALIZING...</div>
+            <div id="conversation">"Awaiting Input..."</div>
+        </div>
+
+        <div class="panel-right">
+            <div class="data-box">
+                <div class="data-title">System Status</div>
+                <div style="color:#0f0">ONLINE</div>
+            </div>
+            <div class="data-box">
+                <div class="data-title">CPU Load</div>
+                <div class="big-text" id="cpu-val">12%</div>
+            </div>
+            <div class="data-box" style="flex-grow: 1;">
+                <div class="data-title">Diagnostics</div>
+                <div style="font-size: 0.7rem; line-height: 1.6; opacity: 0.8;">
+                    > MEMORY: OPTIMAL<br>
+                    > NETWORK: SECURE<br>
+                    > COOLING: ACTIVE<br>
+                    > UPLINK: ESTABLISHED
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Qt WebChannel to communicate with Python -->
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script>
+        var py;
+
+        // Connect to Python backend
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+            py = channel.objects.py_handler;
+        });
+
+        function updateStatus(status, text) {
+            const statusEl = document.getElementById('status-text');
+            const orb = document.getElementById('orb-container');
+
+            // Default
+            orb.classList.remove('listening', 'speaking');
+            statusEl.innerText = status.toUpperCase();
+            statusEl.style.color = "var(--cyan)";
+
+            if (status.includes('Listening')) {
+                orb.classList.add('listening');
+            }
+            if (status.includes('Speaking') || status.includes('Thinking')) {
+                orb.classList.add('speaking');
+                statusEl.style.color = "#ff0055";
+            }
+
+            if (text) document.getElementById('conversation').innerText = text;
+        }
+
+        function setCpu(val) {
+            document.getElementById('cpu-val').innerText = val + "%";
+        }
+
+        function setImage(path) {
+            const img = document.getElementById('char-img');
+            img.src = path;
+            img.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

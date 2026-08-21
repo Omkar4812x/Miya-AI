@@ -1,0 +1,14 @@
+
+PyQt5
+PyQtWebEngine
+edge-tts
+pygame
+psutil
+ollama
+openai
+SpeechRecognition
+pyaudio
+google-generativeai
+pywhatkit
+requests
+python-dotenv
