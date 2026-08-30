@@ -1,22 +1,48 @@
-# Miya AI
+# 🌸 Miya AI - Voice Assistant & Personal Companion
 
-## 📌 Description
-Welcome to **Miya AI**! This project is part of the curated software workspace.
+> **Conversational voice assistant platform combining natural language processing, speech synthesis, and desktop automation.**
+
+---
+
+## ✨ Features
+
+- 🎙️ **Speech & Voice Synthesis Pipeline**
+  - Integrated speech recognition and pyttsx3 voice feedback with customizable pitch/rate parameters.
+- 🧠 **Smart Conversation Engine**
+  - Natural conversation handling with context retention and prompt customization (`Miya_Enhanced`).
+- ⚡ **Task Automation**
+  - Desktop application shortcuts, web searching, and media playback control.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Language**: Python 3.10+
+- **Speech**: `SpeechRecognition`, `pyttsx3`, `gTTS`, `pygame`
+- **Automation**: `pyautogui`, Requests, BeautifulSoup4
+
+---
 
 ## 🚀 Getting Started
 
-### Prerequisites
-Ensure you have the required runtime environment installed for this project:
-- **Node.js** (if applicable for web/frontend components)
-- **Python 3.10+** (if applicable for AI/voice scripts)
-- **Java JDK 17+** (if applicable for Java applications)
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Omkar4812x/Miya-AI.git
+   cd Miya-AI
+   ```
 
-### Installation & Execution
-1. Clone this repository to your local machine.
-2. Install dependencies:
-   - For Node.js projects: `npm install`
-   - For Python projects: `pip install -r requirements.txt` (or create a venv: `python -m venv venv`)
-3. Launch the application entry point.
+2. **Install dependencies**:
+   ```bash
+   pip install speechrecognition pyttsx3 gtts pygame pyautogui requests
+   ```
 
-## 📄 License & Attribution
-Created and maintained as part of the Tech Hub projects collection.
+3. **Run Assistant**:
+   ```bash
+   python Miya_Enhanced/main.py
+   ```
+
+---
+
+## 📄 License
+
+Distributed under the MIT License.
